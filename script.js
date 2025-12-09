@@ -116,6 +116,8 @@ const resultContainer = document.getElementById('result-container');
 const progressBar = document.getElementById('progress-bar');
 const currentQuestionSpan = document.getElementById('current-question');
 const retryBtn = document.getElementById('retry-btn');
+const adAfterQuestions = document.getElementById('ad-after-questions');
+const adBeforeResult = document.getElementById('ad-before-result');
 
 // 초기화
 function init() {
@@ -124,6 +126,8 @@ function init() {
     questionContainer.innerHTML = '';
     resultContainer.classList.add('hidden');
     questionContainer.classList.remove('hidden');
+    if (adAfterQuestions) adAfterQuestions.classList.add('hidden');
+    if (adBeforeResult) adBeforeResult.classList.add('hidden');
     showQuestion();
 }
 
@@ -169,7 +173,11 @@ function selectOption(optionIndex) {
     
     if (currentQuestionIndex < questions.length) {
         showQuestion();
+        // 중간 질문들 사이에는 광고 숨김
+        if (adAfterQuestions) adAfterQuestions.classList.add('hidden');
     } else {
+        // 마지막 질문 후 광고 표시
+        if (adAfterQuestions) adAfterQuestions.classList.remove('hidden');
         showResult();
     }
 }
@@ -178,6 +186,10 @@ function selectOption(optionIndex) {
 function showResult() {
     questionContainer.classList.add('hidden');
     resultContainer.classList.remove('hidden');
+    
+    // 결과 위 광고 표시
+    if (adBeforeResult) adBeforeResult.classList.remove('hidden');
+    if (adAfterQuestions) adAfterQuestions.classList.add('hidden');
 
     // 점수 업데이트
     document.getElementById('self-score').textContent = scores.SELF;
