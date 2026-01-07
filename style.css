@@ -69,3 +69,27 @@
     }
 }
 
+/* 반응형 디자인 */
+@media (max-width: 640px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .question-card {
+        padding: 1rem;
+    }
+    
+    .option-btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    #result-container {
+        padding: 1rem;
+    }
+    
+    .result-item {
+        padding: 0.75rem 0;
+    }
+}
+
