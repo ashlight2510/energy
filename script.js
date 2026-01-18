@@ -215,39 +215,21 @@ function selectOption(optionIndex) {
 
 // 결과 표시
 function showResult() {
-    questionContainer.classList.add('hidden');
-    resultContainer.classList.remove('hidden');
-    
-    // 결과 위 광고 표시
-    if (adBeforeResult) adBeforeResult.classList.remove('hidden');
-    if (adAfterQuestions) adAfterQuestions.classList.add('hidden');
-
-    // 점수 업데이트
-    document.getElementById('self-score').textContent = scores.SELF;
-    document.getElementById('love-score').textContent = scores.LOVE;
-    document.getElementById('impulse-score').textContent = scores.IMPULSE;
-
-    // 최대 점수 계산 (정규화용)
+    // result.html로 리다이렉트
     const maxScore = Math.max(scores.SELF, scores.LOVE, scores.IMPULSE, 1);
     const totalScore = scores.SELF + scores.LOVE + scores.IMPULSE;
-
-    // 프로그레스 바 애니메이션
-    setTimeout(() => {
-        const selfBar = document.querySelector('[data-category="SELF"] .bg-gradient-to-r');
-        const loveBar = document.querySelector('[data-category="LOVE"] .bg-gradient-to-r');
-        const impulseBar = document.querySelector('[data-category="IMPULSE"] .bg-gradient-to-r');
-
-        selfBar.style.width = `${(scores.SELF / maxScore) * 100}%`;
-        loveBar.style.width = `${(scores.LOVE / maxScore) * 100}%`;
-        impulseBar.style.width = `${(scores.IMPULSE / maxScore) * 100}%`;
-    }, 100);
-
-    // 결과 메시지 생성
-    const resultMessage = generateResultMessage();
-    document.querySelector('#result-message p').textContent = resultMessage;
-
-    // 스크롤을 결과로 이동
-    resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const maxCategory = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+    const percentage = Math.round((scores[maxCategory] / totalScore) * 100);
+    
+    const params = new URLSearchParams({
+        self: scores.SELF.toString(),
+        love: scores.LOVE.toString(),
+        impulse: scores.IMPULSE.toString(),
+        total: totalScore.toString(),
+        category: maxCategory,
+        percentage: percentage.toString()
+    });
+    window.location.href = `result.html?${params.toString()}`;
 }
 
 // 결과 메시지 생성
